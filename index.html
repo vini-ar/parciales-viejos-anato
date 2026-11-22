@@ -682,6 +682,16 @@ AUTO.forEach(function(q,i){
   autoMap[key].qs.push(q);
 });
 var ALL=BANK.concat(AUTO);
+/* ---------- autoevaluaciones também no TP ---------- */
+AUTO.forEach(function(q){
+  if(!q.tp_aula) return;
+  var key=q.tp_aula+"|"+q.topic_aula;
+  if(!gmap[key]){ gmap[key]={key:key, tp:q.tp_aula, topic:q.topic_aula, mat:q.mat, ciclo:q.mat==="Fuera del listado"?"2":"1", qs:[]}; GROUPS.push(gmap[key]); }
+  gmap[key].qs.push(q);
+});
+var ORDEM_TP=["TP1", "TP2", "TP3", "TP4", "TP5", "TP6", "TP7", "TP8", "TP9", "TP10H", "TP10C", "TP11", "TP12B", "TP12ET", "TP12FL", "TP13P", "TP13T", "TP14", "SNC", "ABD", "PEL", "OTROS"];
+GROUPS.sort(function(a,b){ return ORDEM_TP.indexOf(a.tp)-ORDEM_TP.indexOf(b.tp); });
+/* ---------- fim autoevaluaciones também no TP ---------- */
 /* ---------- extra: simulacro @apuntes.medunlp, depois do AUTO para não mudar as posições salvas ---------- */
 var EXTRA = JSON.parse((document.getElementById('extraData')||{}).textContent||'[]');
 EXTRA.forEach(function(q,i){
@@ -871,7 +881,6 @@ function renderHome(){
     '<span class="smear"><span class="topic">Simulado do 1º parcial</span>'+
     '<span class="meta">1 questão de cada TP do 1º parcial + sorteio até '+SIM_N+', só entre as que têm clave'+best+'</span>'+
     '</span></button></div>';
-  deck.appendChild(sim);
 
   if(wrongQs.length || flagQs.length){
     var cards = '';
